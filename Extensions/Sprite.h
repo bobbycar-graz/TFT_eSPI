@@ -142,7 +142,7 @@ class TFT_eSprite : public TFT_eSPI {
            // Draw a single unicode character using the loaded font
   void     drawGlyph(uint16_t code);
            // Print string to sprite using loaded font at cursor position
-  void     printToSprite(String string);
+  void     printToSprite(std::string_view string);
            // Print char array to sprite using loaded font at cursor position
   void     printToSprite(char *cbuffer, uint16_t len);
            // Print indexed glyph to sprite using loaded font at x,y
