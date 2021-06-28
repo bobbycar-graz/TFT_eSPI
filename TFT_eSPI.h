@@ -28,8 +28,9 @@
 
 //Standard support
 #include <Arduino.h>
-#include <Print.h>
 #include <SPI.h>
+
+#include <string_view>
 
 /***************************************************************************************
 **                         Section 2: Load library and processor specific header files
@@ -293,7 +294,7 @@ static const uint16_t default_4bit_palette[] PROGMEM = {
 // by calling getSetup(), zero impact on code size unless used, mainly for diagnostics
 typedef struct
 {
-String  version = TFT_ESPI_VERSION;
+std::string_view version = TFT_ESPI_VERSION;
 int32_t esp;         // Processor code
 uint8_t trans;       // SPI transaction supoort
 uint8_t serial;      // Serial (SPI) or parallel
@@ -360,7 +361,7 @@ swap_coord(T& a, T& b) { T t = a; a = b; b = t; }
 typedef uint16_t (*getColorCallback)(uint16_t x, uint16_t y);
 
 // Class functions and variables
-class TFT_eSPI : public Print { friend class TFT_eSprite; // Sprite class has access to protected members
+class TFT_eSPI { friend class TFT_eSprite; // Sprite class has access to protected members
 
  //--------------------------------------- public ------------------------------------//
  public:
@@ -503,13 +504,9 @@ class TFT_eSPI : public Print { friend class TFT_eSprite; // Sprite class has ac
            // Use with setTextDatum() to position string on TFT, and setTextPadding() to blank old displayed strings
            drawString(const char *string, int32_t x, int32_t y, uint8_t font),  // Draw string using specifed font number
            drawString(const char *string, int32_t x, int32_t y),                // Draw string using current font
-           drawString(const String& string, int32_t x, int32_t y, uint8_t font),// Draw string using specifed font number
-           drawString(const String& string, int32_t x, int32_t y),              // Draw string using current font
 
            drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font),  // Deprecated, use setTextDatum() and drawString()
-           drawRightString(const char *string, int32_t x, int32_t y, uint8_t font),   // Deprecated, use setTextDatum() and drawString()
-           drawCentreString(const String& string, int32_t x, int32_t y, uint8_t font),// Deprecated, use setTextDatum() and drawString()
-           drawRightString(const String& string, int32_t x, int32_t y, uint8_t font); // Deprecated, use setTextDatum() and drawString()
+           drawRightString(const char *string, int32_t x, int32_t y, uint8_t font);   // Deprecated, use setTextDatum() and drawString()
 
   // Text rendering and font handling support funtions
   void     setCursor(int16_t x, int16_t y),                 // Set cursor for tft.print()
@@ -540,8 +537,6 @@ class TFT_eSPI : public Print { friend class TFT_eSprite; // Sprite class has ac
 
   int16_t  textWidth(const char *string, uint8_t font),     // Returns pixel width of string in specified font
            textWidth(const char *string),                   // Returns pixel width of string in current font
-           textWidth(const String& string, uint8_t font),   // As above for String types
-           textWidth(const String& string),
            fontHeight(int16_t font),                        // Returns pixel height of string in specified font
            fontHeight(void);                                // Returns pixel width of string in current font
 
