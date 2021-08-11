@@ -26,6 +26,12 @@
   #include "Processors/TFT_eSPI_Generic.c"
 #endif
 
+namespace {
+void delay(uint32_t ms)
+{
+    vTaskDelay(ms / portTICK_PERIOD_MS);
+}
+}
 // Clipping macro for pushImage
 #define PI_CLIP                                        \
   if (_vpOoB) return;                                  \
