@@ -16,6 +16,9 @@
 
 #include "TFT_eSPI.h"
 
+#include <esprandom.h>
+#include <randomutils.h>
+
 #if defined (ESP32)
   #include "Processors/TFT_eSPI_ESP32.c"
 #elif defined (ESP8266)
@@ -2664,7 +2667,7 @@ int16_t TFT_eSPI::fontHeight(void)
 ** Function name:           drawChar
 ** Description:             draw a single character in the GLCD or GFXFF font
 ***************************************************************************************/
-void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size)
+void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint16_t color, uint16_t bg, uint8_t size)
 {
   if (_vpOoB) return;
 
@@ -2932,7 +2935,7 @@ void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
 ** Function name:           drawPixel
 ** Description:             push a single pixel at an arbitrary position
 ***************************************************************************************/
-void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
+void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint16_t color)
 {
   if (_vpOoB) return;
 
@@ -3106,7 +3109,7 @@ void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
 ***************************************************************************************/
 // Bresenham's algorithm - thx wikipedia - speed enhanced by Bodmer to use
 // an efficient FastH/V Line draw routine for line segments of 2 pixels or more
-void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color)
+void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint16_t color)
 {
   if (_vpOoB) return;
 
@@ -3173,7 +3176,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
 ** Function name:           drawFastVLine
 ** Description:             draw a vertical line
 ***************************************************************************************/
-void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color)
+void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint16_t color)
 {
   if (_vpOoB) return;
 
@@ -3203,7 +3206,7 @@ void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color)
 ** Function name:           drawFastHLine
 ** Description:             draw a horizontal line
 ***************************************************************************************/
-void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color)
+void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint16_t color)
 {
   if (_vpOoB) return;
 
@@ -3233,7 +3236,7 @@ void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color)
 ** Function name:           fillRect
 ** Description:             draw a filled rectangle
 ***************************************************************************************/
-void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color)
+void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t color)
 {
   if (_vpOoB) return;
 
@@ -3324,7 +3327,7 @@ uint32_t TFT_eSPI::color16to24(uint16_t color565)
 ** Function name:           color24to16
 ** Description:             convert 24 bit colour to a 16 bit 565 colour value
 ***************************************************************************************/
-uint32_t TFT_eSPI::color24to16(uint32_t color888)
+uint16_t TFT_eSPI::color24to16(uint32_t color888)
 {
   uint16_t r = (color888 >> 8) & 0xF800;
   uint16_t g = (color888 >> 5) & 0x07E0;
@@ -3509,7 +3512,7 @@ uint16_t TFT_eSPI::alphaBlend(uint8_t alpha, uint16_t fgc, uint16_t bgc)
 uint16_t TFT_eSPI::alphaBlend(uint8_t alpha, uint16_t fgc, uint16_t bgc, uint8_t dither)
 {
   if (dither) {
-    int16_t alphaDither = (int16_t)alpha - dither + random(2*dither+1); // +/-4 randomised
+    int16_t alphaDither = (int16_t)alpha - dither + cpputils::randomNumber<long>(2*dither, espcpputils::esp_random_device{}); // +/-4 randomised
     alpha = (uint8_t)alphaDither;
     if (alphaDither <  0) alpha = 0;
     if (alphaDither >255) alpha = 255;
@@ -3526,7 +3529,7 @@ uint32_t TFT_eSPI::alphaBlend24(uint8_t alpha, uint32_t fgc, uint32_t bgc, uint8
 {
 
   if (dither) {
-    int16_t alphaDither = (int16_t)alpha - dither + random(2*dither+1); // +/-dither randomised
+    int16_t alphaDither = (int16_t)alpha - dither + cpputils::randomNumber<long>(2*dither, espcpputils::esp_random_device{}); // +/-dither randomised
     alpha = (uint8_t)alphaDither;
     if (alphaDither <  0) alpha = 0;
     if (alphaDither >255) alpha = 255;
