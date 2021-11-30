@@ -2489,6 +2489,25 @@ void TFT_eSPI::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t
   end_tft_write();              // Does nothing if Sprite class uses this function
 }
 
+void TFT_eSPI::drawSunkenRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color0, uint32_t color1, uint32_t color2)
+{
+    //begin_tft_write();          // Sprite class can use this function, avoiding begin_tft_write()
+    inTransaction = true;
+
+    drawFastHLine(x, y, w, color0);
+    drawFastHLine(x, y + h - 1, w, color1);
+    // Avoid drawing corner pixels twice
+    drawFastVLine(x, y+1, h-2, color0);
+    drawFastVLine(x + w - 1, y+1, h-2, color1);
+
+    setWindow(x + 1, y + 1, x + w - 2, y + h - 2);
+
+    pushBlock(color2, (w - 2) * (h - 2));
+
+    inTransaction = false;
+    end_tft_write();              // Does nothing if Sprite class uses this function
+}
+
 
 /***************************************************************************************
 ** Function name:           drawTriangle
