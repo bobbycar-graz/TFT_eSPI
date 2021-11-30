@@ -437,6 +437,8 @@ class TFT_eSPI { friend class TFT_eSprite; // Sprite class has access to protect
            drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t radius, uint32_t color),
            fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t radius, uint32_t color);
 
+  void     drawSunkenRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color0, uint32_t color1, uint32_t color2);
+
 
   void     drawCircle(int32_t x, int32_t y, int32_t r, uint32_t color),
            drawCircleHelper(int32_t x, int32_t y, int32_t r, uint8_t cornername, uint32_t color),
@@ -559,8 +561,11 @@ class TFT_eSPI { friend class TFT_eSprite; // Sprite class has access to protect
 
 
   // Colour conversion
-           // Convert 8 bit red, green and blue to 16 bits
-  uint16_t color565(uint8_t red, uint8_t green, uint8_t blue);
+  // Convert 8 bit red, green and blue to 16 bits
+  static constexpr uint16_t color565(uint8_t red, uint8_t green, uint8_t blue) noexcept
+  {
+      return ((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3);
+  }
 
            // Convert 8 bit colour to 16 bits
   uint16_t color8to16(uint8_t color332);
