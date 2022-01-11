@@ -11,6 +11,7 @@
 // Include processor specific header
 #include "soc/spi_reg.h"
 #include "driver/spi_master.h"
+#include "soc/gpio_struct.h"
 
 // SUPPORT_TRANSACTIONS is mandatory for ESP32 so the hal mutex is toggled
 #if !defined (SUPPORT_TRANSACTIONS)
