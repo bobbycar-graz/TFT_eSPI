@@ -144,7 +144,7 @@ class TFT_eSprite : public TFT_eSPI {
            // Print string to sprite using loaded font at cursor position
   void     printToSprite(std::string_view string);
            // Print char array to sprite using loaded font at cursor position
-  void     printToSprite(char *cbuffer, uint16_t len);
+  void     printToSprite(const char *cbuffer, uint16_t len);
            // Print indexed glyph to sprite using loaded font at x,y
   int16_t  printToSprite(int16_t x, int16_t y, uint16_t index);
 
