@@ -139,7 +139,7 @@ class TFT_eSprite : public TFT_eSPI {
            // Functions associated with anti-aliased fonts
   void     drawGlyph(uint16_t code);
   void     printToSprite(std::string_view string);
-  void     printToSprite(char *cbuffer, uint16_t len);
+  void     printToSprite(const char *cbuffer, uint16_t len);
   int16_t  printToSprite(int16_t x, int16_t y, uint16_t index);
 
  private:

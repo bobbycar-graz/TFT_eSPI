@@ -4129,7 +4129,7 @@ int16_t TFT_eSPI::drawString(std::string_view string, int32_t poX, int32_t poY, 
     setCursor(poX, poY);
 
     while (n < len) {
-      uint16_t uniCode = decodeUTF8((uint8_t*)ptr, &n, len - n);
+      uint16_t uniCode = decodeUTF8((const uint8_t*)std::begin(string), &n, len - n);
       drawGlyph(uniCode);
     }
     sumX += cwidth;
