@@ -29,6 +29,8 @@
   #include "Processors/TFT_eSPI_Generic.c"
 #endif
 
+#include "font_latin_hiragana_24.h"
+
 namespace {
 void delay(uint32_t ms)
 {
@@ -4303,7 +4305,13 @@ void TFT_eSPI::setFreeFont(uint8_t font)
 ***************************************************************************************/
 void TFT_eSPI::setTextFont(uint8_t f)
 {
+    if (f != 4 && fontLoaded)
+        unloadFont();
+
   textfont = (f > 0) ? f : 1; // Don't allow font 0
+
+    if (f == 4 && !fontLoaded)
+      loadFont(Latin_Hiragana_24);
 }
 #endif
 

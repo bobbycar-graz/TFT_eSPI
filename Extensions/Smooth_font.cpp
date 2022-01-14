@@ -12,29 +12,6 @@
 *************************************************************************************x*/
 void TFT_eSPI::loadFont(const uint8_t array[])
 {
-  if (array == nullptr) return;
-  fontPtr = (uint8_t*) array;
-  loadFont("", false);
-}
-
-#ifdef FONT_FS_AVAILABLE
-/***************************************************************************************
-** Function name:           loadFont
-** Description:             loads parameters from a font vlw file
-*************************************************************************************x*/
-void TFT_eSPI::loadFont(std::string_view fontName, fs::FS &ffs)
-{
-  fontFS = ffs;
-  loadFont(fontName, false);
-}
-#endif
-
-/***************************************************************************************
-** Function name:           loadFont
-** Description:             loads parameters from a font vlw file
-*************************************************************************************x*/
-void TFT_eSPI::loadFont(std::string_view fontName, bool flash)
-{
   /*
     The vlw font format does not appear to be documented anywhere, so some reverse
     engineering has been applied!
@@ -94,41 +71,16 @@ void TFT_eSPI::loadFont(std::string_view fontName, bool flash)
 
   */
 
-  if (fontLoaded) unloadFont();
-
-#ifdef FONT_FS_AVAILABLE
-  if (fontName == "") fs_font = false;
-  else { fontPtr = nullptr; fs_font = true; }
-
-  if (fs_font) {
-    spiffs = flash; // true if font is in SPIFFS
-
-    if(spiffs) fontFS = SPIFFS;
-
-    // Avoid a crash on the ESP32 if the file does not exist
-    if (fontFS.exists("/" + fontName + ".vlw") == false) {
-      Serial.println("Font file " + fontName + " not found!");
-      return;
-    }
-
-    fontFile = fontFS.open( "/" + fontName + ".vlw", "r");
-
-    if(!fontFile) return;
-
-    fontFile.seek(0, fs::SeekSet);
-  }
-#else
-  // Avoid unused varaible warning
-  fontName = fontName;
-  flash = flash;
-#endif
+  if (array == nullptr)
+        return;
+  fontPtr = array;
 
   gFont.gArray   = (const uint8_t*)fontPtr;
 
   gFont.gCount   = (uint16_t)readInt32(); // glyph count in file
-                             readInt32(); // vlw encoder version - discard
+  readInt32(); // vlw encoder version - discard
   gFont.yAdvance = (uint16_t)readInt32(); // Font size in points, not pixels
-                             readInt32(); // discard
+  readInt32(); // discard
   gFont.ascent   = (uint16_t)readInt32(); // top of "d"
   gFont.descent  = (uint16_t)readInt32(); // bottom of "p"
 

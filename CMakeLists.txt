@@ -1,9 +1,11 @@
 set(headers
     TFT_eSPI.h
+    font_latin_hiragana_24.h
 )
 
 set(sources
     TFT_eSPI.cpp
+    font_latin_hiragana_24.cpp
 )
 
 set(dependencies

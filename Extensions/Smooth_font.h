@@ -5,10 +5,6 @@
 
   // These are for the new antialiased fonts
   void     loadFont(const uint8_t array[]);
-#ifdef FONT_FS_AVAILABLE
-  void     loadFont(std::string_view fontName, fs::FS &ffs);
-#endif
-  void     loadFont(std::string_view fontName, bool flash = true);
   void     unloadFont( void );
   bool     getUnicodeIndex(uint16_t unicode, uint16_t *index);
 
@@ -42,20 +38,10 @@ fontMetrics gFont = { nullptr, 0, 0, 0, 0, 0, 0, 0 };
 
   bool     fontLoaded = false; // Flags when a anti-aliased font is loaded
 
-#ifdef FONT_FS_AVAILABLE
-  fs::File fontFile;
-  fs::FS   &fontFS  = SPIFFS;
-  bool     spiffs   = true;
-  bool     fs_font = false;    // For ESP32/8266 use smooth font file or FLASH (PROGMEM) array
-
-#else
-  bool     fontFile = true;
-#endif
-
   private:
 
   void     loadMetrics(void);
   uint32_t readInt32(void);
 
-  uint8_t* fontPtr = nullptr;
+  const uint8_t* fontPtr = nullptr;
 
