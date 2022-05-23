@@ -29,6 +29,10 @@
   #include "Processors/TFT_eSPI_Generic.c"
 #endif
 
+#include "freertos/task.h"
+#include "wiring_shift.h"
+#include "esp32-hal-gpio.h"
+
 namespace {
 void delay(uint32_t ms)
 {
