@@ -13,6 +13,8 @@
   Last update by Bodmer 20/03/20
  ****************************************************/
 
+// bobbycar remote display
+#include "../../main/remotedisplaywebsocket.h"
 
 #include "TFT_eSPI.h"
 
@@ -1820,6 +1822,7 @@ void  TFT_eSPI::readRectRGB(int32_t x0, int32_t y0, int32_t w, int32_t h, uint8_
 // Optimised midpoint circle algorithm
 void TFT_eSPI::drawCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color)
 {
+  remotedisplay::drawCircle(x0, y0, r, color);
   int32_t  x  = 1;
   int32_t  dx = 1;
   int32_t  dy = r+r;
@@ -1986,6 +1989,7 @@ void TFT_eSPI::fillCircleHelper(int32_t x0, int32_t y0, int32_t r, uint8_t corne
 ***************************************************************************************/
 void TFT_eSPI::drawEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint16_t color)
 {
+  remotedisplay::drawEllipse(x0, y0, rx, ry, color);
   if (rx<2) return;
   if (ry<2) return;
   int32_t x, y;
@@ -2083,6 +2087,7 @@ void TFT_eSPI::fillEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint1
 ***************************************************************************************/
 void TFT_eSPI::fillScreen(uint32_t color)
 {
+  remotedisplay::fillScreen(color);
   fillRect(0, 0, _width, _height, color);
 }
 
@@ -2094,6 +2099,7 @@ void TFT_eSPI::fillScreen(uint32_t color)
 // Draw a rectangle
 void TFT_eSPI::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color)
 {
+  remotedisplay::drawRect(x, y, w, h, color);
   //begin_tft_write();          // Sprite class can use this function, avoiding begin_tft_write()
   inTransaction = true;
 
@@ -2115,6 +2121,7 @@ void TFT_eSPI::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
 // Draw a rounded rectangle
 void TFT_eSPI::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color)
 {
+  remotedisplay::drawRoundRect(x, y, w, h, r, color);
   //begin_tft_write();          // Sprite class can use this function, avoiding begin_tft_write()
   inTransaction = true;
 
@@ -2141,6 +2148,7 @@ void TFT_eSPI::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t
 // Fill a rounded rectangle, changed to horizontal lines (faster in sprites)
 void TFT_eSPI::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color)
 {
+  remotedisplay::fillRoundRect(x, y, w, h, r, color);
   //begin_tft_write();          // Sprite class can use this function, avoiding begin_tft_write()
   inTransaction = true;
 
@@ -2693,6 +2701,7 @@ int16_t TFT_eSPI::fontHeight(void)
 ***************************************************************************************/
 void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint16_t color, uint16_t bg, uint8_t size)
 {
+  remotedisplay::drawChar(x, y, c, color, bg, size);
   if (_vpOoB) return;
 
   int32_t xd = x + _xDatum;
@@ -3135,6 +3144,7 @@ void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
 // an efficient FastH/V Line draw routine for line segments of 2 pixels or more
 void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint16_t color)
 {
+  remotedisplay::drawLine(x0, y0, x1, y1, color);
   if (_vpOoB) return;
 
   //begin_tft_write();       // Sprite class can use this function, avoiding begin_tft_write()
@@ -3262,6 +3272,7 @@ void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint16_t color)
 ***************************************************************************************/
 void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t color)
 {
+  remotedisplay::fillRect(x, y, w, h, color);
   if (_vpOoB) return;
 
   x+= _xDatum;
@@ -3992,6 +4003,7 @@ int16_t TFT_eSPI::drawString(std::string_view string, int32_t poX, int32_t poY)
 // With font number. Note: font number is over-ridden if a smooth font is loaded
 int16_t TFT_eSPI::drawString(std::string_view string, int32_t poX, int32_t poY, uint8_t font)
 {
+  remotedisplay::drawString(string, poX, poY, font);
   int16_t sumX = 0;
   uint8_t padding = 1, baseline = 0;
   uint16_t cwidth = textWidth(string, font); // Find the pixel width of the string in the font
@@ -4222,6 +4234,7 @@ return sumX;
 ***************************************************************************************/
 int16_t TFT_eSPI::drawCentreString(std::string_view string, int32_t dX, int32_t poY, uint8_t font)
 {
+  remotedisplay::drawCentreString(string, dX, poY, font);
   uint8_t tempdatum = textdatum;
   int32_t sumX = 0;
   textdatum = TC_DATUM;
