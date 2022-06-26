@@ -2970,6 +2970,7 @@ void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
 ***************************************************************************************/
 void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint16_t color)
 {
+  remotedisplay::drawPixel(x, y, color);
   if (_vpOoB) return;
 
   x+= _xDatum;
@@ -3212,6 +3213,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint16_t
 ***************************************************************************************/
 void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint16_t color)
 {
+  remotedisplay::drawFastVLine(x, y, h, color);
   if (_vpOoB) return;
 
   x+= _xDatum;
@@ -3242,6 +3244,7 @@ void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint16_t color)
 ***************************************************************************************/
 void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint16_t color)
 {
+  remotedisplay::drawFastHLine(x, y, w, color);
   if (_vpOoB) return;
 
   x+= _xDatum;
@@ -4250,6 +4253,7 @@ int16_t TFT_eSPI::drawCentreString(std::string_view string, int32_t dX, int32_t 
 ***************************************************************************************/
 int16_t TFT_eSPI::drawRightString(std::string_view string, int32_t dX, int32_t poY, uint8_t font)
 {
+  remotedisplay::drawRightString(string, dX, poY, font);
   uint8_t tempdatum = textdatum;
   int16_t sumX = 0;
   textdatum = TR_DATUM;
